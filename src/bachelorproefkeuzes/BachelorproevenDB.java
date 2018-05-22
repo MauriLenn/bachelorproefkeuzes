@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 
 /**
  *
@@ -50,14 +53,15 @@ public class BachelorproevenDB {
         }     
     }
     
-    public ArrayList<Bachelorproef> getProeven(){
+    public ObservableList<Bachelorproef> getProeven(){
         
         try {
             String sql = "select * from bp";
             PreparedStatement stmt =
                     connectie.prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
-            ArrayList<Bachelorproef> lijst = new ArrayList<>();
+            ObservableList<Bachelorproef> lijst;
+            lijst = FXCollections.observableArrayList();
             while(results.next()){
                 String titel = results.getString("titel");
                 String beschr = results.getString("beschrijving");

@@ -5,18 +5,20 @@
  */
 package bachelorproefkeuzes;
 
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  *
  * @author Lennert
  */
 public class Bachelorproef {
     private int id; //omdat we met een database werken
-    private String titel;
-    private String beschrijving;
+    private SimpleStringProperty titel;
+    private SimpleStringProperty beschrijving;
 
     public Bachelorproef(String titel, String beschrijving) {
-        this.titel = titel;
-        this.beschrijving = beschrijving;
+        this.titel = new SimpleStringProperty(titel);
+        this.beschrijving = new SimpleStringProperty(beschrijving);
     }
 
     public int getId() {
@@ -28,19 +30,31 @@ public class Bachelorproef {
     }
 
     public String getTitel() {
+        return titel.get();
+    }
+    
+    public SimpleStringProperty titelProperty(){
         return titel;
     }
 
     public void setTitel(String titel) {
-        this.titel = titel;
+        this.titel = new SimpleStringProperty(titel);
     }
 
     public String getBeschrijving() {
+        return beschrijving.get();
+    }
+    
+    public SimpleStringProperty beschrijvingProperty(){
         return beschrijving;
     }
 
     public void setBeschrijving(String beschrijving) {
-        this.beschrijving = beschrijving;
+        this.beschrijving = new SimpleStringProperty(beschrijving);
+    }
+
+    void setTitel() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

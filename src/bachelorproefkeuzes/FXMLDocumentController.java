@@ -9,9 +9,13 @@ package bachelorproefkeuzes;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -35,20 +39,32 @@ public class FXMLDocumentController {
     @FXML
     private Button voegBPtoe;
     
+    @FXML
+    private TableView<Bachelorproef> bachelorproeven;
+
+    @FXML
+    private TableColumn<Bachelorproef, String> titel_column;
+
+    @FXML
+    private TableColumn<Bachelorproef, String> beschrijving_column;
+    
     private BachelorproevenDB model;
 
     @FXML
     void initialize() {
         model = new BachelorproevenDB();
         voegBPtoe.setOnAction(event -> voegBPToe());
-
+        
+        titel_column.setCellValueFactory(cel -> cel.getValue().titelProperty());
+        beschrijving_column.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
+        bachelorproeven.setItems(model.getProeven());
     }
     
     public void voegBPToe(){
         Bachelorproef nieuw = new Bachelorproef(titel.getText(), 
                                                 beschrijvingen.getText());
         model.voegToe(nieuw);
-        ArrayList<Bachelorproef> alles = model.getProeven();
+        ObservableList<Bachelorproef> alles = model.getProeven();
         voegBPtoe.setText(alles.size() + " proeven");
     }
 }
