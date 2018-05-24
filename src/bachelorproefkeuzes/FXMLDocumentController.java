@@ -48,6 +48,9 @@ public class FXMLDocumentController {
     @FXML
     private TableColumn<Bachelorproef, String> beschrijving_column;
     
+    @FXML
+    private TableColumn<Bachelorproef, Number> id_column;
+    
     private BachelorproevenDB model;
 
     @FXML
@@ -55,8 +58,9 @@ public class FXMLDocumentController {
         model = new BachelorproevenDB();
         voegBPtoe.setOnAction(event -> voegBPToe());
         
-        titel_column.setCellValueFactory(cel -> cel.getValue().titelProperty());
-        beschrijving_column.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
+        titel_column.setCellValueFactory(cel -> cel.getValue().getTitelProperty());
+        beschrijving_column.setCellValueFactory(cel -> cel.getValue().getBeschrijvingProperty());
+        id_column.setCellValueFactory(cel -> cel.getValue().getIdProperty());
         bachelorproeven.setItems(model.getProeven());
     }
     
@@ -66,6 +70,7 @@ public class FXMLDocumentController {
         model.voegToe(nieuw);
         ObservableList<Bachelorproef> alles = model.getProeven();
         voegBPtoe.setText(alles.size() + " proeven");
+        bachelorproeven.setItems(alles);
     }
 }
 

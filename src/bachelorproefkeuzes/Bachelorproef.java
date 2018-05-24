@@ -5,6 +5,7 @@
  */
 package bachelorproefkeuzes;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -12,7 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
  * @author Lennert
  */
 public class Bachelorproef {
-    private int id; //omdat we met een database werken
+    private SimpleIntegerProperty id; //omdat we met een database werken
     private SimpleStringProperty titel;
     private SimpleStringProperty beschrijving;
 
@@ -22,18 +23,22 @@ public class Bachelorproef {
     }
 
     public int getId() {
+        return id.get();
+    }
+    
+    public SimpleIntegerProperty getIdProperty(){
         return id;
     }
 
     protected void setId(int id) {
-        this.id = id;
+        this.id = new SimpleIntegerProperty(id);
     }
 
     public String getTitel() {
         return titel.get();
     }
     
-    public SimpleStringProperty titelProperty(){
+    public SimpleStringProperty getTitelProperty(){
         return titel;
     }
 
@@ -45,17 +50,11 @@ public class Bachelorproef {
         return beschrijving.get();
     }
     
-    public SimpleStringProperty beschrijvingProperty(){
+    public SimpleStringProperty getBeschrijvingProperty(){
         return beschrijving;
     }
 
     public void setBeschrijving(String beschrijving) {
         this.beschrijving = new SimpleStringProperty(beschrijving);
-    }
-
-    void setTitel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
+    } 
 }
