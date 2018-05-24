@@ -26,7 +26,7 @@ public class Bachelorproef {
         return id.get();
     }
     
-    public SimpleIntegerProperty getIdProperty(){
+    public SimpleIntegerProperty idProperty(){
         return id;
     }
 
@@ -38,7 +38,7 @@ public class Bachelorproef {
         return titel.get();
     }
     
-    public SimpleStringProperty getTitelProperty(){
+    public SimpleStringProperty titelProperty(){
         return titel;
     }
 
@@ -50,7 +50,7 @@ public class Bachelorproef {
         return beschrijving.get();
     }
     
-    public SimpleStringProperty getBeschrijvingProperty(){
+    public SimpleStringProperty beschrijvingProperty(){
         return beschrijving;
     }
 

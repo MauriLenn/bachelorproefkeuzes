@@ -56,7 +56,7 @@ public class BachelorproevenDB {
     public ObservableList<Bachelorproef> getProeven(){
         
         try {
-            String sql = "select * from bp";
+            String sql = "select * from bp order by titel";
             PreparedStatement stmt =
                     connectie.prepareStatement(sql);
             ResultSet results = stmt.executeQuery();

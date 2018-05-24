@@ -26,7 +26,7 @@ public class Student {
         return id.get();
     }
     
-    public SimpleIntegerProperty getIdProperty(){
+    public SimpleIntegerProperty idProperty(){
         return id;
     }
 
@@ -38,7 +38,7 @@ public class Student {
         return naam.get();
     }
     
-    public SimpleStringProperty getNaamProperty(){
+    public SimpleStringProperty naamProperty(){
         return naam;
     }
 
@@ -50,7 +50,7 @@ public class Student {
         return paswoord.get();
     }
     
-    public SimpleStringProperty getPaswoordProperty(){
+    public SimpleStringProperty paswoordProperty(){
         return paswoord;
     }
 
