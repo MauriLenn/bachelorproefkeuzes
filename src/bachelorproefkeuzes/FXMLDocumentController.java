@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
 public class FXMLDocumentController {
 
@@ -26,6 +27,12 @@ public class FXMLDocumentController {
 
     @FXML
     private URL location;
+    
+    @FXML
+    private AnchorPane anchorpane_tableview_bp;
+    
+    @FXML
+    private AnchorPane anchorpane_bp;
 
     @FXML
     private Label label;
@@ -40,6 +47,40 @@ public class FXMLDocumentController {
     private Button voegBPtoe;
     
     @FXML
+    private Button button_GoToMenu_bp;
+
+    @FXML
+    private AnchorPane anchorpane_student;
+    
+    @FXML
+    private TextField textfield_naamStudent;
+    
+    @FXML
+    private TextField textfield_wachtwoord;
+
+    @FXML
+    private TextField textfield_herhaalWachtwoord;
+
+
+    @FXML
+    private Button voegStudenttoe;
+
+    @FXML
+    private Label label_foutWachtwoord;
+
+    @FXML
+    private Button button_goToMenu_student;
+
+    @FXML
+    private AnchorPane anchorpane_menu;
+
+    @FXML
+    private Button button_goToStudent;
+
+    @FXML
+    private Button button_goToBP;
+    
+    @FXML
     private TableView<Bachelorproef> bachelorproeven;
 
     @FXML
@@ -49,7 +90,13 @@ public class FXMLDocumentController {
     private TableColumn<Bachelorproef, String> beschrijving_column;
     
     @FXML
-    private TableColumn<Bachelorproef, Number> id_column;
+    private TableView<?> studenten;
+
+    @FXML
+    private TableColumn<?, ?> column_id;
+
+    @FXML
+    private TableColumn<?, ?> column_naam;
     
     private BachelorproevenDB model;
 
@@ -57,6 +104,8 @@ public class FXMLDocumentController {
     void initialize() {
         model = new BachelorproevenDB();
         voegBPtoe.setOnAction(event -> voegBPToe());
+        button_goToStudent.setOnAction(event -> gaNaarStudentenScherm());
+        button_goToMenu_student.setOnAction(event -> gaNaarMenu_Student() );
         vulTabel();
     }
     
@@ -72,8 +121,21 @@ public class FXMLDocumentController {
     public void vulTabel(){
         titel_column.setCellValueFactory(cel -> cel.getValue().titelProperty());
         beschrijving_column.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
-        id_column.setCellValueFactory(cel -> cel.getValue().idProperty());
         bachelorproeven.setItems(model.getProeven());
+    }
+
+    public void gaNaarStudentenScherm() {
+       anchorpane_menu.setVisible(false);
+       anchorpane_student.setVisible(true);
+    }
+
+    public void gaNaarMenu_Student() {
+        if(textfield_wachtwoord.getText().equals(textfield_herhaalWachtwoord.getText())){
+            anchorpane_student.setVisible(false);
+            anchorpane_menu.setVisible(true);
+        } else {
+            label_foutWachtwoord.setText("wachtwoorden komen niet overeen");
+        }
     }
 }
 
