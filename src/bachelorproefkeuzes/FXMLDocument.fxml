@@ -10,15 +10,15 @@
 
 <AnchorPane id="AnchorPane" prefHeight="641.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bachelorproefkeuzes.FXMLDocumentController">
     <children>
-      <AnchorPane fx:id="anchorpane_tableview_bp" layoutY="333.0" prefHeight="335.0" prefWidth="682.0">
+      <AnchorPane fx:id="anchorpane_tableview_bp" layoutY="333.0" prefHeight="335.0" prefWidth="724.0">
          <children>
-            <TableView fx:id="bachelorproeven" layoutX="14.0" layoutY="14.0" prefHeight="318.0" prefWidth="305.0">
+            <TableView fx:id="bachelorproeven" layoutX="23.0" layoutY="14.0" prefHeight="318.0" prefWidth="374.0">
               <columns>
                 <TableColumn fx:id="titel_column" prefWidth="120.0" text="titel" />
-                <TableColumn fx:id="beschrijving_column" prefWidth="184.0" text="beschrijving" />
+                <TableColumn fx:id="beschrijving_column" prefWidth="253.0" text="beschrijving" />
               </columns>
             </TableView>
-            <TableView fx:id="studenten" layoutX="348.0" layoutY="14.0" prefHeight="318.0" prefWidth="305.0">
+            <TableView fx:id="studenten" layoutX="405.0" layoutY="14.0" prefHeight="318.0" prefWidth="305.0">
               <columns>
                 <TableColumn fx:id="column_id" prefWidth="111.0" text="student ID" />
                 <TableColumn fx:id="column_naam" prefWidth="193.0" text="naam" />
@@ -28,13 +28,13 @@
       </AnchorPane>
       <AnchorPane fx:id="anchorpane_bp" prefHeight="318.0" prefWidth="682.0" visible="false">
          <children>
-            <TextField fx:id="titel" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" promptText="naam bacherlorproef" />
+            <TextField fx:id="titel" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" promptText="naam bachelorproef" />
             <TextArea fx:id="beschrijvingen" layoutX="14.0" layoutY="47.0" prefHeight="200.0" prefWidth="266.0" promptText="beschrijving van de bacherlorproef" />
             <Button fx:id="voegBPtoe" layoutX="83.0" layoutY="255.0" mnemonicParsing="false" text="sla bachelorproef op " />
             <Button fx:id="button_GoToMenu_bp" layoutX="14.0" layoutY="255.0" mnemonicParsing="false" text="Back" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchorpane_student" prefHeight="318.0" prefWidth="682.0">
+      <AnchorPane fx:id="anchorpane_student" prefHeight="318.0" prefWidth="682.0" visible="false">
          <children>
             <TextField fx:id="textfield_naamStudent" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" promptText="naam student" />
             <Button fx:id="voegStudenttoe" layoutX="69.0" layoutY="255.0" mnemonicParsing="false" text="sla student op" />
@@ -44,7 +44,7 @@
             <Button fx:id="button_goToMenu_student" layoutX="14.0" layoutY="255.0" mnemonicParsing="false" text="back" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchorpane_menu" layoutX="-1.0" prefHeight="318.0" prefWidth="682.0" visible="false">
+      <AnchorPane fx:id="anchorpane_menu" layoutX="-1.0" prefHeight="318.0" prefWidth="682.0">
          <children>
             <Button fx:id="button_goToStudent" layoutX="66.0" layoutY="14.0" mnemonicParsing="false" text="Nieuwe student toevoegen" />
             <Button fx:id="button_goToBP" layoutX="49.0" layoutY="49.0" mnemonicParsing="false" text="Nieuwe bachelorproef toevoegen" />

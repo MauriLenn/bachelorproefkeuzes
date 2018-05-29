@@ -61,7 +61,6 @@ public class FXMLDocumentController {
     @FXML
     private TextField textfield_herhaalWachtwoord;
 
-
     @FXML
     private Button voegStudenttoe;
 
@@ -90,52 +89,80 @@ public class FXMLDocumentController {
     private TableColumn<Bachelorproef, String> beschrijving_column;
     
     @FXML
-    private TableView<?> studenten;
+    private TableView<Student> studenten;
 
     @FXML
-    private TableColumn<?, ?> column_id;
+    private TableColumn<Student, Number> column_id;
 
     @FXML
-    private TableColumn<?, ?> column_naam;
+    private TableColumn<Student, String> column_naam;
     
-    private BachelorproevenDB model;
+    private BachelorproevenDB modelBP;
+    private StudentenDB modelStudent;
 
     @FXML
     void initialize() {
-        model = new BachelorproevenDB();
+        modelBP = new BachelorproevenDB();
+        modelStudent = new StudentenDB();
+        
         voegBPtoe.setOnAction(event -> voegBPToe());
-        button_goToStudent.setOnAction(event -> gaNaarStudentenScherm());
-        button_goToMenu_student.setOnAction(event -> gaNaarMenu_Student() );
-        vulTabel();
+        voegStudenttoe.setOnAction(event -> voegStudentToe());
+        
+        button_goToStudent.setOnAction(event -> gaNaarStudentScherm());
+        button_goToBP.setOnAction(event -> gaNaarBachelorproefScherm());
+        button_goToMenu_student.setOnAction(event -> gaNaarMenu_Student());
+        button_GoToMenu_bp.setOnAction(event -> gaNaarMenu_BP());
+        
+        
+        vulTabellen();
     }
     
     public void voegBPToe(){
         Bachelorproef nieuw = new Bachelorproef(titel.getText(), 
                                                 beschrijvingen.getText());
-        model.voegToe(nieuw);
-        ObservableList<Bachelorproef> alles = model.getProeven();
+        modelBP.voegToe(nieuw);
+        ObservableList<Bachelorproef> alles = modelBP.getProeven();
         voegBPtoe.setText(alles.size() + " proeven");
-        vulTabel();
+        vulTabellen();
     }
+    public void voegStudentToe() {     
+        if(textfield_wachtwoord.getText().equals(textfield_herhaalWachtwoord.getText())){
+            label_foutWachtwoord.setText("");
+            Student nieuw = new Student(textfield_naamStudent.getText(),textfield_wachtwoord.getText());
+            modelStudent.voegToe(nieuw);
+            ObservableList<Student> alles = modelStudent.getProeven();
+            voegStudenttoe.setText(alles.size() + " studenten");
+            vulTabellen();
+        } else {
+            label_foutWachtwoord.setText("wachtwoorden komen niet overeen");
+        }    
+    } 
     
-    public void vulTabel(){
+    public void vulTabellen(){
         titel_column.setCellValueFactory(cel -> cel.getValue().titelProperty());
         beschrijving_column.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
-        bachelorproeven.setItems(model.getProeven());
+        bachelorproeven.setItems(modelBP.getProeven());
+        
+        column_id.setCellValueFactory(cel -> cel.getValue().idProperty());
+        column_naam.setCellValueFactory(cel -> cel.getValue().naamProperty() );
+        studenten.setItems(modelStudent.getProeven());
     }
 
-    public void gaNaarStudentenScherm() {
+    public void gaNaarStudentScherm() {
        anchorpane_menu.setVisible(false);
        anchorpane_student.setVisible(true);
     }
-
-    public void gaNaarMenu_Student() {
-        if(textfield_wachtwoord.getText().equals(textfield_herhaalWachtwoord.getText())){
-            anchorpane_student.setVisible(false);
-            anchorpane_menu.setVisible(true);
-        } else {
-            label_foutWachtwoord.setText("wachtwoorden komen niet overeen");
-        }
+    public void gaNaarBachelorproefScherm() {
+        anchorpane_menu.setVisible(false);
+        anchorpane_bp.setVisible(true);
     }
+    public void gaNaarMenu_Student() {
+        anchorpane_student.setVisible(false);
+        anchorpane_menu.setVisible(true);    
+    }
+    public void gaNaarMenu_BP() {
+        anchorpane_bp.setVisible(false);
+        anchorpane_menu.setVisible(true);
+    }  
 }
 
