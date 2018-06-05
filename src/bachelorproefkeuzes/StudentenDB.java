@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -71,5 +72,39 @@ public class StudentenDB {
             Logger.getLogger(BachelorproevenDB.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    public String getWachtwoord(Integer studentID){
+        try {
+            String sql = "select paswoord from student where id = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            stmt.setInt(1, studentID);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                String wachtwoord = results.getString("paswoord");
+                return wachtwoord;
+            }    
+            results.close();
+            stmt.close();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
+    
+    public void verwijderStudent(Integer studentID){
+        try {
+            String sql = "delete from student where id = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, studentID);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

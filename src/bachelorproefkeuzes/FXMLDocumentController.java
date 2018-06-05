@@ -48,9 +48,21 @@ public class FXMLDocumentController {
     
     @FXML
     private Button button_GoToMenu_bp;
+    
+    @FXML
+    private Button button_haalWop;
 
     @FXML
     private AnchorPane anchorpane_student;
+    
+    @FXML
+    private TextField textfield_studentID_deleteS;
+
+    @FXML
+    private TextField textfield_wachtwoord_deleteS;
+    
+    @FXML
+    private Button button_verwijderStudent;
     
     @FXML
     private TextField textfield_naamStudent;
@@ -60,7 +72,10 @@ public class FXMLDocumentController {
 
     @FXML
     private TextField textfield_herhaalWachtwoord;
-
+    
+    @FXML
+     private TextField textfield_studentID_getW;
+    
     @FXML
     private Button voegStudenttoe;
 
@@ -112,6 +127,8 @@ public class FXMLDocumentController {
         button_goToBP.setOnAction(event -> gaNaarBachelorproefScherm());
         button_goToMenu_student.setOnAction(event -> gaNaarMenu_Student());
         button_GoToMenu_bp.setOnAction(event -> gaNaarMenu_BP());
+        button_haalWop.setOnAction(event -> haalWachtwoordOp());
+        button_verwijderStudent.setOnAction(event -> verwijderStudent());
         
         
         vulTabellen();
@@ -147,7 +164,28 @@ public class FXMLDocumentController {
         column_naam.setCellValueFactory(cel -> cel.getValue().naamProperty() );
         studenten.setItems(modelStudent.getProeven());
     }
-
+    
+    public void haalWachtwoordOp() {
+        String text = textfield_studentID_getW.getText();
+        Integer studentID = Integer.parseInt(text);
+        String wachtwoord = modelStudent.getWachtwoord(studentID);
+        button_haalWop.setText(wachtwoord);
+    }
+    
+    public void verwijderStudent() {
+        String text = textfield_studentID_deleteS.getText();
+        Integer studentID = Integer.parseInt(text);
+        String wachtwoord = textfield_wachtwoord_deleteS.getText();
+        if(wachtwoord.equals(modelStudent.getWachtwoord(studentID))){
+            modelStudent.verwijderStudent(studentID);
+            vulTabellen();
+            textfield_studentID_deleteS.clear();
+            textfield_wachtwoord_deleteS.clear();
+        } else {
+            
+        }      
+    }
+    
     public void gaNaarStudentScherm() {
        anchorpane_menu.setVisible(false);
        anchorpane_student.setVisible(true);
