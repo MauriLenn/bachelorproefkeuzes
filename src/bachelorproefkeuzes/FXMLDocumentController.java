@@ -33,6 +33,12 @@ public class FXMLDocumentController {
     
     @FXML
     private AnchorPane anchorpane_bp;
+    
+    @FXML
+    private TextField textfield_BP_verwijderen;
+
+    @FXML
+    private Button button_BP_verwijderen;
 
     @FXML
     private Label label;
@@ -129,18 +135,26 @@ public class FXMLDocumentController {
         button_GoToMenu_bp.setOnAction(event -> gaNaarMenu_BP());
         button_haalWop.setOnAction(event -> haalWachtwoordOp());
         button_verwijderStudent.setOnAction(event -> verwijderStudent());
+        button_BP_verwijderen.setOnAction(event -> verwijderBP());
         
         
         vulTabellen();
     }
     
     public void voegBPToe(){
+        if(titel.getText().equals(modelBP.getTitelBP(titel.getText()))){
+            titel.setText("//deze BP bestaat al");
+        }
+        else{
         Bachelorproef nieuw = new Bachelorproef(titel.getText(), 
                                                 beschrijvingen.getText());
         modelBP.voegToe(nieuw);
         ObservableList<Bachelorproef> alles = modelBP.getProeven();
         voegBPtoe.setText(alles.size() + " proeven");
+        titel.clear();
+        beschrijvingen.clear();
         vulTabellen();
+        }
     }
     public void voegStudentToe() {     
         if(textfield_wachtwoord.getText().equals(textfield_herhaalWachtwoord.getText())){
@@ -149,9 +163,13 @@ public class FXMLDocumentController {
             modelStudent.voegToe(nieuw);
             ObservableList<Student> alles = modelStudent.getProeven();
             voegStudenttoe.setText(alles.size() + " studenten");
+            textfield_naamStudent.clear();
+            textfield_wachtwoord.clear();
             vulTabellen();
         } else {
             label_foutWachtwoord.setText("wachtwoorden komen niet overeen");
+            textfield_wachtwoord.clear();
+            textfield_herhaalWachtwoord.clear();
         }    
     } 
     
@@ -186,6 +204,13 @@ public class FXMLDocumentController {
         }      
     }
     
+    public void verwijderBP() {
+        String titelBP = textfield_BP_verwijderen.getText();
+        modelBP.verwijderBP(titelBP);
+        vulTabellen();
+        textfield_BP_verwijderen.clear();
+    }
+    
     public void gaNaarStudentScherm() {
        anchorpane_menu.setVisible(false);
        anchorpane_student.setVisible(true);
@@ -202,5 +227,6 @@ public class FXMLDocumentController {
         anchorpane_bp.setVisible(false);
         anchorpane_menu.setVisible(true);
     }  
+
 }
 

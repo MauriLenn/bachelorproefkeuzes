@@ -26,15 +26,19 @@
             </TableView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchorpane_bp" prefHeight="318.0" prefWidth="682.0" visible="false">
+      <AnchorPane fx:id="anchorpane_bp" prefHeight="318.0" prefWidth="724.0">
          <children>
-            <TextField fx:id="titel" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" promptText="naam bachelorproef" />
-            <TextArea fx:id="beschrijvingen" layoutX="14.0" layoutY="47.0" prefHeight="200.0" prefWidth="266.0" promptText="beschrijving van de bacherlorproef" />
-            <Button fx:id="voegBPtoe" layoutX="83.0" layoutY="255.0" mnemonicParsing="false" text="sla bachelorproef op " />
-            <Button fx:id="button_GoToMenu_bp" layoutX="14.0" layoutY="255.0" mnemonicParsing="false" text="Back" />
+            <TextField fx:id="titel" layoutX="15.0" layoutY="34.0" prefHeight="25.0" prefWidth="200.0" promptText="naam bachelorproef" />
+            <TextArea fx:id="beschrijvingen" layoutX="15.0" layoutY="73.0" prefHeight="200.0" prefWidth="266.0" promptText="beschrijving van de bachelorproef" />
+            <Button fx:id="voegBPtoe" layoutX="83.0" layoutY="280.0" mnemonicParsing="false" text="sla bachelorproef op " />
+            <Button fx:id="button_GoToMenu_bp" layoutX="14.0" layoutY="280.0" mnemonicParsing="false" text="Back" />
+            <Label layoutX="29.0" layoutY="6.0" text="nieuw bachelorproef toevoegen " />
+            <Label layoutX="443.0" layoutY="6.0" text="bachelorproef verwijderen " />
+            <TextField fx:id="textfield_BP_verwijderen" layoutX="415.0" layoutY="34.0" prefHeight="25.0" prefWidth="200.0" promptText="naam bachelorproef " />
+            <Button fx:id="button_BP_verwijderen" layoutX="437.0" layoutY="73.0" mnemonicParsing="false" text="bachelorproef verwijderen" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchorpane_student" prefHeight="318.0" prefWidth="724.0">
+      <AnchorPane fx:id="anchorpane_student" prefHeight="318.0" prefWidth="724.0" visible="false">
          <children>
             <TextField fx:id="textfield_naamStudent" layoutX="14.0" layoutY="39.0" prefHeight="25.0" prefWidth="200.0" promptText="naam student" />
             <Button fx:id="voegStudenttoe" alignment="CENTER" layoutX="69.0" layoutY="175.0" mnemonicParsing="false" text="sla student op" />
