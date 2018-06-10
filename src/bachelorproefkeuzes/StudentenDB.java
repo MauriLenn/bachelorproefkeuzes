@@ -107,4 +107,24 @@ public class StudentenDB {
         }
         
     }
+    
+    public String getNaam(Integer studentID){
+        try {
+            String sql = "select naam from student where id = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            stmt.setInt(1, studentID);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                String naam = results.getString("naam");
+                return naam;
+            }    
+            results.close();
+            stmt.close();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
 }

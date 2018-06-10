@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +28,54 @@ public class FXMLDocumentController {
 
     @FXML
     private URL location;
+    
+    @FXML
+    private AnchorPane anchorpane_student;
+    
+    @FXML
+    private Button button_student_uitloggen;
+    
+    @FXML
+    private Label label_student_studentID;
+
+    @FXML
+    private Label label_student_name;
+    
+    @FXML
+    private TextField textfield_student_Wveranderen;
+
+    @FXML
+    private TextField textfield_studetn_HWveranderen;
+
+    @FXML
+    private Button button_student_Wveranderen;
+    
+    @FXML
+    private AnchorPane anchorpane_login;
+
+    @FXML
+    private TextField textfield_login_studentID;
+
+    @FXML
+    private TextField textfield_login_paswoord;
+
+    @FXML
+    private Button button_login_login;
+
+    @FXML
+    private Label label_login_Wfout;
+
+    @FXML
+    private Button button_login_Wvergeten;
+
+    @FXML
+    private CheckBox checkbox_admin;
+    
+    @FXML
+    private AnchorPane anchorpane_admin;
+    
+    @FXML
+    private Button button_admin_Uitloggen;
     
     @FXML
     private AnchorPane anchorpane_tableview_bp;
@@ -59,7 +108,7 @@ public class FXMLDocumentController {
     private Button button_haalWop;
 
     @FXML
-    private AnchorPane anchorpane_student;
+    private AnchorPane anchorpane_admin_student;
     
     @FXML
     private TextField textfield_studentID_deleteS;
@@ -136,6 +185,10 @@ public class FXMLDocumentController {
         button_haalWop.setOnAction(event -> haalWachtwoordOp());
         button_verwijderStudent.setOnAction(event -> verwijderStudent());
         button_BP_verwijderen.setOnAction(event -> verwijderBP());
+        button_login_login.setOnAction(event -> login());
+        button_login_Wvergeten.setOnAction(event -> wachtwoordVergeten());
+        button_student_uitloggen.setOnAction(event -> studentUitloggen());
+        button_admin_Uitloggen.setOnAction(event -> adminUitloggen());
         
         
         vulTabellen();
@@ -193,8 +246,8 @@ public class FXMLDocumentController {
     public void verwijderStudent() {
         String text = textfield_studentID_deleteS.getText();
         Integer studentID = Integer.parseInt(text);
-        String wachtwoord = textfield_wachtwoord_deleteS.getText();
-        if(wachtwoord.equals(modelStudent.getWachtwoord(studentID))){
+        String paswoord= textfield_wachtwoord_deleteS.getText();
+        if(paswoord.equals(modelStudent.getWachtwoord(studentID))){
             modelStudent.verwijderStudent(studentID);
             vulTabellen();
             textfield_studentID_deleteS.clear();
@@ -211,22 +264,58 @@ public class FXMLDocumentController {
         textfield_BP_verwijderen.clear();
     }
     
+    public void login() {
+        String text = textfield_login_studentID.getText();
+        Integer studentID = Integer.parseInt(text); 
+        String paswoord = textfield_login_paswoord.getText();
+        if( paswoord.equals(modelStudent.getWachtwoord(studentID)) ){
+               if(checkbox_admin.isSelected()){
+                   anchorpane_login.setVisible(false);
+                   anchorpane_admin.setVisible(true);
+                   textfield_login_paswoord.clear();
+               } else {
+                   anchorpane_login.setVisible(false);
+                   anchorpane_student.setVisible(true);
+                   label_student_studentID.setText(textfield_login_studentID.getText());
+                   label_student_name.setText(modelStudent.getNaam(studentID));
+                   textfield_login_paswoord.clear();
+               }
+        
+        } else {
+            label_login_Wfout.setText("het wachtwoord is fout of de student ID bestaat niet");
+            textfield_login_paswoord.clear();
+        }
+    }
+    
+    public void wachtwoordVergeten() {
+        String text = textfield_login_studentID.getText();
+        Integer studentID = Integer.parseInt(text);
+        String paswoord = modelStudent.getWachtwoord(studentID);
+        button_login_Wvergeten.setText(paswoord);
+    }
     public void gaNaarStudentScherm() {
        anchorpane_menu.setVisible(false);
-       anchorpane_student.setVisible(true);
+       anchorpane_admin_student.setVisible(true);
     }
     public void gaNaarBachelorproefScherm() {
         anchorpane_menu.setVisible(false);
         anchorpane_bp.setVisible(true);
     }
     public void gaNaarMenu_Student() {
-        anchorpane_student.setVisible(false);
+        anchorpane_admin_student.setVisible(false);
         anchorpane_menu.setVisible(true);    
     }
     public void gaNaarMenu_BP() {
         anchorpane_bp.setVisible(false);
         anchorpane_menu.setVisible(true);
-    }  
-
+    }     
+    public void studentUitloggen() {
+        anchorpane_student.setVisible(false);
+        anchorpane_login.setVisible(true);
+    }
+    public void adminUitloggen() {
+        anchorpane_admin.setVisible(false);
+        anchorpane_login.setVisible(true);
+    }
 }
 
