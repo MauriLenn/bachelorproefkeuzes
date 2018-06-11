@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -33,6 +34,30 @@ public class FXMLDocumentController {
     private AnchorPane anchorpane_student;
     
     @FXML
+    private Label label_student_BPselected;
+    
+    @FXML
+    private Label label_student_BPwarning;
+    
+    @FXML
+    private Label label_student_BP;
+
+    @FXML
+    private Label label_student_beschrijving;
+    
+    @FXML
+    private TableView<Bachelorproef> tableview_student_BPaanvraag;
+
+    @FXML
+    private TableColumn<Bachelorproef, String> tablecolumn_AanvraagBP_titel;
+
+    @FXML
+    private TableColumn<Bachelorproef, String> tablecolumn_AanvraagBP_beschrijving;
+
+    @FXML
+    private Button button_student_BPaanvragen;
+    
+    @FXML
     private Button button_student_uitloggen;
     
     @FXML
@@ -45,7 +70,7 @@ public class FXMLDocumentController {
     private TextField textfield_student_Wveranderen;
 
     @FXML
-    private TextField textfield_studetn_HWveranderen;
+    private TextField textfield_student_HWveranderen;
 
     @FXML
     private Button button_student_Wveranderen;
@@ -189,9 +214,14 @@ public class FXMLDocumentController {
         button_login_Wvergeten.setOnAction(event -> wachtwoordVergeten());
         button_student_uitloggen.setOnAction(event -> studentUitloggen());
         button_admin_Uitloggen.setOnAction(event -> adminUitloggen());
+        button_student_Wveranderen.setOnAction(event -> wachtwoordVeranderen());
+        button_student_BPaanvragen.setOnAction(event -> aanvraagBP());
         
         
         vulTabellen();
+        
+        tableview_student_BPaanvraag.getSelectionModel().selectedItemProperty()
+                    .addListener((observable,oud,nieuw) -> toonGeselecteerdeBP(nieuw));
     }
     
     public void voegBPToe(){
@@ -236,6 +266,12 @@ public class FXMLDocumentController {
         studenten.setItems(modelStudent.getProeven());
     }
     
+    public void vulBPaanvraagTabel() {
+        tablecolumn_AanvraagBP_titel.setCellValueFactory(cel -> cel.getValue().titelProperty());
+        tablecolumn_AanvraagBP_beschrijving.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
+        tableview_student_BPaanvraag.setItems(modelBP.getBeschikbareProeven());
+    }
+    
     public void haalWachtwoordOp() {
         String text = textfield_studentID_getW.getText();
         Integer studentID = Integer.parseInt(text);
@@ -276,8 +312,13 @@ public class FXMLDocumentController {
                } else {
                    anchorpane_login.setVisible(false);
                    anchorpane_student.setVisible(true);
+                   vulBPaanvraagTabel();
                    label_student_studentID.setText(textfield_login_studentID.getText());
                    label_student_name.setText(modelStudent.getNaam(studentID));
+                   
+                   label_student_BP.setText(modelBP.getBPkeuze(studentID));
+                   label_student_beschrijving.setText(modelBP.getBPbeschrijvingKeuze(studentID));
+                   
                    textfield_login_paswoord.clear();
                }
         
@@ -293,6 +334,41 @@ public class FXMLDocumentController {
         String paswoord = modelStudent.getWachtwoord(studentID);
         button_login_Wvergeten.setText(paswoord);
     }
+    
+    public void wachtwoordVeranderen() {
+        String paswoord = textfield_student_Wveranderen.getText();
+        String herhalingPaswoord = textfield_student_HWveranderen.getText();
+        String text = label_student_studentID.getText();
+        Integer studentID = Integer.parseInt(text);
+        if(paswoord.equals(herhalingPaswoord)){
+            modelStudent.wachtwoordVeranderen(studentID, paswoord);
+            textfield_student_Wveranderen.clear();
+            textfield_student_HWveranderen.clear();
+        } else {
+            textfield_student_Wveranderen.setStyle("-fx-text-inner-color: red;");
+            textfield_student_HWveranderen.setStyle("-fx-text-inner-color: red;");
+        }
+    }
+    
+    public void aanvraagBP() {
+        if(label_student_BP.getText()== null && label_student_beschrijving.getText() == null){
+            Integer bpID = modelBP.getID(label_student_BPselected.getText());
+            String text = label_student_studentID.getText();
+            Integer studentID = Integer.parseInt(text);
+            
+            modelStudent.voegKeuzeToe(studentID, bpID);
+            label_student_BP.setText(modelBP.getBPkeuze(studentID));
+            label_student_beschrijving.setText(modelBP.getBPbeschrijvingKeuze(studentID));   
+        } else {
+            label_student_BPwarning.setText("u heeft al een bachelorproef!");    
+        }
+    }
+    
+    private void toonGeselecteerdeBP(Bachelorproef nieuw) {
+        String titel = nieuw.getTitel();
+        label_student_BPselected.setText(titel);
+    }
+    
     public void gaNaarStudentScherm() {
        anchorpane_menu.setVisible(false);
        anchorpane_admin_student.setVisible(true);
@@ -312,10 +388,14 @@ public class FXMLDocumentController {
     public void studentUitloggen() {
         anchorpane_student.setVisible(false);
         anchorpane_login.setVisible(true);
+        label_student_BPwarning.setText("");
+        label_student_BPselected.setText("");
     }
     public void adminUitloggen() {
         anchorpane_admin.setVisible(false);
         anchorpane_login.setVisible(true);
-    }
+    } 
+
+    
 }
 

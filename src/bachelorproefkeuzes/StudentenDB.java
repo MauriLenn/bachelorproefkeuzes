@@ -48,6 +48,24 @@ public class StudentenDB {
         }  
     }
     
+    public void voegKeuzeToe (Integer studentID, Integer bpID){
+        String sql = "insert into keuzes (student,bachelorproef,punten)" + "values (?,?,?)";
+        PreparedStatement stmt;
+        try {
+            stmt = connectie.prepareStatement(sql,
+                            PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            stmt.setInt(1, studentID);
+            stmt.setInt(2, bpID);
+            stmt.setInt(3, 0);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(BachelorproevenDB.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
+    
+    
     public ObservableList<Student> getProeven(){
         
         try {
@@ -126,5 +144,20 @@ public class StudentenDB {
             Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } 
+    }
+    
+    public void wachtwoordVeranderen(Integer studentID, String nieuwPaswoord){
+        try {
+            String sql = "update student set paswoord = ? where id = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, nieuwPaswoord);
+            stmt.setInt(2, studentID);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

@@ -79,6 +79,32 @@ public class BachelorproevenDB {
         }
     }
     
+    public ObservableList<Bachelorproef> getBeschikbareProeven(){
+        
+        try {
+            String sql = "select * from bp left join keuzes on keuzes.bachelorproef = bp.id where keuzes.bachelorproef is null";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            ResultSet results = stmt.executeQuery();
+            ObservableList<Bachelorproef> lijst;
+            lijst = FXCollections.observableArrayList();
+            while(results.next()){
+                String titel = results.getString("titel");
+                String beschr = results.getString("beschrijving");
+                int id = results.getInt("id");
+                Bachelorproef bp = new Bachelorproef(titel,beschr);
+                bp.setId(id);
+                lijst.add(bp);
+            }
+            results.close();
+            stmt.close();
+            return lijst;
+        } catch (SQLException ex) {
+            Logger.getLogger(BachelorproevenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
     public String getTitelBP(String huidigeTitelBP){
         try {
             String sql = "select titel from bp where titel = ?";
@@ -99,6 +125,27 @@ public class BachelorproevenDB {
         } 
     }
     
+    public Integer getID(String bpTitel){
+        try {
+            String sql = "select id from bp where titel = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            stmt.setString(1,bpTitel);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                Integer bpID = results.getInt("id");
+                return bpID;
+            }    
+            results.close();
+            stmt.close();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
+    
+    
     
     public void verwijderBP(String naamBP){
         try {
@@ -113,4 +160,46 @@ public class BachelorproevenDB {
         }
         
     } 
+    
+    public String getBPkeuze(Integer studentID){
+        try {
+            String sql = "select titel from bp where id = (select bachelorproef from keuzes where student = ?)";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            stmt.setInt(1,studentID);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                String titelBP = results.getString("titel");
+                return titelBP;
+            }    
+            results.close();
+            stmt.close();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
+    
+    public String getBPbeschrijvingKeuze(Integer studentID){
+        try {
+            String sql = "select beschrijving from bp where id = (select bachelorproef from keuzes where student = ?)";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            stmt.setInt(1,studentID);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                String titelBP = results.getString("beschrijving");
+                return titelBP;
+            }    
+            results.close();
+            stmt.close();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
+    
+    
 }
