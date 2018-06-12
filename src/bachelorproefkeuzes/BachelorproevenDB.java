@@ -26,6 +26,9 @@ public class BachelorproevenDB {
     
     private Connection connectie;
     
+    /**
+     * Methode om de connectie te maken
+     */
     public BachelorproevenDB(){
         try {
             connectie = DriverManager.getConnection( "jdbc:mysql://localhost:3306/bpkeuzes",
@@ -35,6 +38,11 @@ public class BachelorproevenDB {
         }
     }
     
+    /**
+     * Methode om een bachelorproef toe te voegen aan tabel bp
+     * 
+     * @param bp
+     */
     public void voegToe(Bachelorproef bp){
         String sql = "insert into bp (titel,beschrijving)" + "values (?,?)"; //op vraagteken moet nog concrete data worden ingevoegd ergens anders
         // en om te vermijden da een tabel wordt verwijderd door iemand
@@ -53,6 +61,29 @@ public class BachelorproevenDB {
         }     
     }
     
+     /**
+     *
+     * @param naamBP
+     */
+    public void verwijderBP(String naamBP){
+        try {
+            String sql = "delete from bp where titel = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, naamBP);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    } 
+    
+    /**
+     * Methode om alle bachelorproeven uit de tabel bp te halen 
+     * 
+     * @return een lijst van alle bachelorproeven
+     */
     public ObservableList<Bachelorproef> getProeven(){
         
         try {
@@ -79,6 +110,11 @@ public class BachelorproevenDB {
         }
     }
     
+    /**
+     *
+     * 
+     * @return
+     */
     public ObservableList<Bachelorproef> getBeschikbareProeven(){
         
         try {
@@ -105,6 +141,11 @@ public class BachelorproevenDB {
         }
     }
     
+    /**
+     *
+     * @param huidigeTitelBP
+     * @return
+     */
     public String getTitelBP(String huidigeTitelBP){
         try {
             String sql = "select titel from bp where titel = ?";
@@ -125,6 +166,11 @@ public class BachelorproevenDB {
         } 
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public String getBeschrijvingBP(int id){
         try {
             String sql = "select beschrijving from bp where id = ?";
@@ -145,6 +191,11 @@ public class BachelorproevenDB {
         } 
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public String getTitelBP_id(int id){
         try {
             String sql = "select titel from bp where id = ?";
@@ -165,6 +216,11 @@ public class BachelorproevenDB {
         } 
     }
     
+    /**
+     *
+     * @param bpTitel
+     * @return
+     */
     public Integer getID(String bpTitel){
         try {
             String sql = "select id from bp where titel = ?";
@@ -185,22 +241,13 @@ public class BachelorproevenDB {
         } 
     }
     
+   
     
-    
-    public void verwijderBP(String naamBP){
-        try {
-            String sql = "delete from bp where titel = ?";
-            PreparedStatement stmt =
-                    connectie.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, naamBP);
-            stmt.executeUpdate();
-            stmt.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    } 
-    
+    /**
+     *
+     * @param studentID
+     * @return
+     */
     public String getBPkeuze(Integer studentID){
         try {
             String sql = "select titel from bp where id = (select bachelorproef from keuzes where student = ?)";
@@ -221,6 +268,11 @@ public class BachelorproevenDB {
         } 
     }
     
+    /**
+     *
+     * @param studentID
+     * @return
+     */
     public String getBPbeschrijvingKeuze(Integer studentID){
         try {
             String sql = "select beschrijving from bp where id = (select bachelorproef from keuzes where student = ?)";
@@ -239,7 +291,5 @@ public class BachelorproevenDB {
             Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } 
-    }
-    
-    
+    }   
 }

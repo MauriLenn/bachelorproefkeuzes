@@ -101,10 +101,7 @@ public class FXMLDocumentController {
     
     @FXML
     private Button button_admin_Uitloggen;
-    
-    @FXML
-    private AnchorPane anchorpane_tableview;
-    
+   
     @FXML
     private AnchorPane anchorpane_bp;
     
@@ -130,10 +127,10 @@ public class FXMLDocumentController {
     private Button button_GoToMenu_bp;
     
     @FXML
-    private Button button_haalWop;
-
-    @FXML
     private AnchorPane anchorpane_admin_student;
+    
+    @FXML
+    private Button button_haalWop;
     
     @FXML
     private TextField textfield_studentID_deleteS;
@@ -176,6 +173,9 @@ public class FXMLDocumentController {
 
     @FXML
     private Button button_goToBP;
+    
+    @FXML
+    private AnchorPane anchorpane_tableview;
     
     @FXML
     private TableView<Bachelorproef> bachelorproeven;
@@ -233,7 +233,18 @@ public class FXMLDocumentController {
     
     @FXML
     private TextField textfield_admin_punten_punten;
+    
+    @FXML
+    private Button button_admin_punten_BPaanvraagAfkeuren;
+    
+    @FXML
+    private Button button_admin_punten_hoogste;
 
+    @FXML
+    private Button button_admin_punten_laagste;
+    
+    @FXML
+    private Button button_admin_punten_gemPunt;
 
     
     private BachelorproevenDB modelBP;
@@ -263,99 +274,23 @@ public class FXMLDocumentController {
         button_admin_goToPunten.setOnAction(event -> gaNaarPuntenScherm());
         button_admin_punten_back.setOnAction(event -> gaNaarMenu_punten());
         button_admin_punten_toekennen.setOnAction(event -> puntenToekennen());
+        button_admin_punten_BPaanvraagAfkeuren.setOnAction(event -> bpAanvraagAfkeuren());
+        button_admin_punten_laagste.setOnAction(event -> laagstePuntZoeken());
+        button_admin_punten_hoogste.setOnAction(event -> hoogstePuntZoeken());
+        button_admin_punten_gemPunt.setOnAction(event -> gemiddeldePuntZoeken());
         
         
         vulTabellen();
         vulKeuzeTabel();
         
+        //ChangeListeners -> dienen om items te selecteren in de tabellen van bachelorproef aanvragen en keuzes
         tableview_student_BPaanvraag.getSelectionModel().selectedItemProperty()
                     .addListener((observable,oud,nieuw) -> toonGeselecteerdeBP(nieuw));
         tableview_keuzes.getSelectionModel().selectedItemProperty()
                 .addListener((observable,oud,nieuw) -> toonKeuze(nieuw));
     }
     
-    public void voegBPToe(){
-        if(titel.getText().equals(modelBP.getTitelBP(titel.getText()))){
-            titel.setText("//deze BP bestaat al");
-        }
-        else{
-        Bachelorproef nieuw = new Bachelorproef(titel.getText(), 
-                                                beschrijvingen.getText());
-        modelBP.voegToe(nieuw);
-        ObservableList<Bachelorproef> alles = modelBP.getProeven();
-        voegBPtoe.setText(alles.size() + " proeven");
-        titel.clear();
-        beschrijvingen.clear();
-        vulTabellen();
-        }
-    }
-    public void voegStudentToe() {     
-        if(textfield_wachtwoord.getText().equals(textfield_herhaalWachtwoord.getText())){
-            label_foutWachtwoord.setText("");
-            Student nieuw = new Student(textfield_naamStudent.getText(),textfield_wachtwoord.getText());
-            modelStudent.voegToe(nieuw);
-            ObservableList<Student> alles = modelStudent.getProeven();
-            voegStudenttoe.setText(alles.size() + " studenten");
-            textfield_naamStudent.clear();
-            textfield_wachtwoord.clear();
-            vulTabellen();
-        } else {
-            label_foutWachtwoord.setText("wachtwoorden komen niet overeen");
-            textfield_wachtwoord.clear();
-            textfield_herhaalWachtwoord.clear();
-        }    
-    } 
-    
-    public void vulTabellen(){
-        titel_column.setCellValueFactory(cel -> cel.getValue().titelProperty());
-        beschrijving_column.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
-        bachelorproeven.setItems(modelBP.getProeven());
-        
-        column_id.setCellValueFactory(cel -> cel.getValue().idProperty());
-        column_naam.setCellValueFactory(cel -> cel.getValue().naamProperty() );
-        studenten.setItems(modelStudent.getProeven());    
-    }
-    
-    public void vulKeuzeTabel(){
-        tablecolumn_Keuzes_student.setCellValueFactory(cel -> cel.getValue().studentProperty());
-        tablecolumn_keuzes_BP.setCellValueFactory(cel -> cel.getValue().bachelorproefProperty());
-        tablecolumn_keuzes_punten.setCellValueFactory(cel -> cel.getValue().puntenProperty());
-        tableview_keuzes.setItems(modelStudent.getKeuzes());
-    }
-    
-    public void vulBPaanvraagTabel() {
-        tablecolumn_AanvraagBP_titel.setCellValueFactory(cel -> cel.getValue().titelProperty());
-        tablecolumn_AanvraagBP_beschrijving.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
-        tableview_student_BPaanvraag.setItems(modelBP.getBeschikbareProeven());
-    }
-    
-    public void haalWachtwoordOp() {
-        String text = textfield_studentID_getW.getText();
-        Integer studentID = Integer.parseInt(text);
-        String wachtwoord = modelStudent.getWachtwoord(studentID);
-        button_haalWop.setText(wachtwoord);
-    }
-    
-    public void verwijderStudent() {
-        String text = textfield_studentID_deleteS.getText();
-        Integer studentID = Integer.parseInt(text);
-        String paswoord= textfield_wachtwoord_deleteS.getText();
-        if(paswoord.equals(modelStudent.getWachtwoord(studentID))){
-            modelStudent.verwijderStudent(studentID);
-            vulTabellen();
-            textfield_studentID_deleteS.clear();
-            textfield_wachtwoord_deleteS.clear();
-        } else {
-            
-        }      
-    }
-    
-    public void verwijderBP() {
-        String titelBP = textfield_BP_verwijderen.getText();
-        modelBP.verwijderBP(titelBP);
-        vulTabellen();
-        textfield_BP_verwijderen.clear();
-    }
+    /////////////////  Methodes die bij het Login scherm horen  ////////////////
     
     public void login() {
         String text = textfield_login_studentID.getText();
@@ -383,8 +318,7 @@ public class FXMLDocumentController {
             label_login_Wfout.setText("het wachtwoord is fout of de student ID bestaat niet");
             textfield_login_paswoord.clear();
         }
-    }
-    
+    }   
     public void wachtwoordVergeten() {
         String text = textfield_login_studentID.getText();
         Integer studentID = Integer.parseInt(text);
@@ -392,6 +326,14 @@ public class FXMLDocumentController {
         button_login_Wvergeten.setText(paswoord);
     }
     
+    
+    ///////////////  Methodes die bij het studentenscherm horen  ///////////////
+    
+    public void vulBPaanvraagTabel() {
+        tablecolumn_AanvraagBP_titel.setCellValueFactory(cel -> cel.getValue().titelProperty());
+        tablecolumn_AanvraagBP_beschrijving.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
+        tableview_student_BPaanvraag.setItems(modelBP.getBeschikbareProeven());
+    } 
     public void wachtwoordVeranderen() {
         String paswoord = textfield_student_Wveranderen.getText();
         String herhalingPaswoord = textfield_student_HWveranderen.getText();
@@ -405,8 +347,145 @@ public class FXMLDocumentController {
             textfield_student_Wveranderen.setStyle("-fx-text-inner-color: red;");
             textfield_student_HWveranderen.setStyle("-fx-text-inner-color: red;");
         }
+    }    
+    public void aanvraagBP() {
+        if(label_student_BP.getText()== null && label_student_beschrijving.getText() == null){
+            Integer bpID = modelBP.getID(label_student_BPselected.getText());
+            String text = label_student_studentID.getText();
+            Integer studentID = Integer.parseInt(text);
+            
+            modelStudent.voegKeuzeToe(studentID, bpID);
+            label_student_BP.setText(modelBP.getBPkeuze(studentID));
+            label_student_beschrijving.setText(modelBP.getBPbeschrijvingKeuze(studentID));   
+        } else {
+            label_student_BPwarning.setText("u heeft al een bachelorproef!");    
+        }
+    }  
+    private void toonGeselecteerdeBP(Bachelorproef nieuw) { //hoort bij de ChangeListener
+        String titel = nieuw.getTitel();
+        label_student_BPselected.setText(titel);
+    }   
+    public void studentUitloggen() {
+        anchorpane_student.setVisible(false);
+        anchorpane_login.setVisible(true);
+        label_student_BPwarning.setText("");
+        label_student_BPselected.setText("");
     }
     
+    
+    ///////////////  Methodes die bij het administratiescherm horen  ///////////
+    
+    public void vulTabellen(){
+        titel_column.setCellValueFactory(cel -> cel.getValue().titelProperty());
+        beschrijving_column.setCellValueFactory(cel -> cel.getValue().beschrijvingProperty());
+        bachelorproeven.setItems(modelBP.getProeven());
+        
+        column_id.setCellValueFactory(cel -> cel.getValue().idProperty());
+        column_naam.setCellValueFactory(cel -> cel.getValue().naamProperty() );
+        studenten.setItems(modelStudent.getProeven());    
+    }
+    
+    // Methodes die bij het administratiescherm_Menu horen
+    
+    public void gaNaarStudentScherm() {
+       anchorpane_menu.setVisible(false);
+       anchorpane_admin_student.setVisible(true);
+    }
+    public void gaNaarBachelorproefScherm() {
+        anchorpane_menu.setVisible(false);
+        anchorpane_bp.setVisible(true);
+    }
+    public void adminUitloggen() {
+        anchorpane_admin.setVisible(false);
+        anchorpane_login.setVisible(true);
+    } 
+    public void gaNaarPuntenScherm() {
+        anchorpane_admin.setVisible(false);
+        anchorpane_admin_punten.setVisible(true);
+        vulKeuzeTabel();
+    }
+    
+    
+    // Methodes die bij het administratiescherm_Student horen
+    
+    public void voegStudentToe() {     
+        if(textfield_wachtwoord.getText().equals(textfield_herhaalWachtwoord.getText())){
+            label_foutWachtwoord.setText("");
+            Student nieuw = new Student(textfield_naamStudent.getText(),textfield_wachtwoord.getText());
+            modelStudent.voegToe(nieuw);
+            ObservableList<Student> alles = modelStudent.getProeven();
+            voegStudenttoe.setText(alles.size() + " studenten");
+            textfield_naamStudent.clear();
+            textfield_wachtwoord.clear();
+            vulTabellen();
+        } else {
+            label_foutWachtwoord.setText("wachtwoorden komen niet overeen");
+            textfield_wachtwoord.clear();
+            textfield_herhaalWachtwoord.clear();
+        }    
+    }    
+    public void haalWachtwoordOp() {
+        String text = textfield_studentID_getW.getText();
+        Integer studentID = Integer.parseInt(text);
+        String wachtwoord = modelStudent.getWachtwoord(studentID);
+        button_haalWop.setText(wachtwoord);
+    } 
+    public void verwijderStudent() {
+        String text = textfield_studentID_deleteS.getText();
+        Integer studentID = Integer.parseInt(text);
+        String paswoord= textfield_wachtwoord_deleteS.getText();
+        if(paswoord.equals(modelStudent.getWachtwoord(studentID))){
+            modelStudent.verwijderStudent(studentID);
+            vulTabellen();
+            textfield_studentID_deleteS.clear();
+            textfield_wachtwoord_deleteS.clear();
+        } else {
+            
+        }      
+    }
+    public void gaNaarMenu_Student() {
+        anchorpane_admin_student.setVisible(false);
+        anchorpane_menu.setVisible(true);    
+    }
+    
+    
+    // Methodes die bij het administratiescherm_Bachelorproef horen
+    
+    public void voegBPToe(){
+        if(titel.getText().equals(modelBP.getTitelBP(titel.getText()))){
+            titel.setText("//deze BP bestaat al");
+        }
+        else{
+        Bachelorproef nieuw = new Bachelorproef(titel.getText(), 
+                                                beschrijvingen.getText());
+        modelBP.voegToe(nieuw);
+        ObservableList<Bachelorproef> alles = modelBP.getProeven();
+        voegBPtoe.setText(alles.size() + " proeven");
+        titel.clear();
+        beschrijvingen.clear();
+        vulTabellen();
+        }
+    }
+    public void verwijderBP() {
+        String titelBP = textfield_BP_verwijderen.getText();
+        modelBP.verwijderBP(titelBP);
+        vulTabellen();
+        textfield_BP_verwijderen.clear();
+    }
+    public void gaNaarMenu_BP() {
+        anchorpane_bp.setVisible(false);
+        anchorpane_menu.setVisible(true);
+    } 
+    
+    
+    //Methodes die bij het administratiescherm_PuntenToekennen horen
+     
+    public void vulKeuzeTabel(){
+        tablecolumn_Keuzes_student.setCellValueFactory(cel -> cel.getValue().studentProperty());
+        tablecolumn_keuzes_BP.setCellValueFactory(cel -> cel.getValue().bachelorproefProperty());
+        tablecolumn_keuzes_punten.setCellValueFactory(cel -> cel.getValue().puntenProperty());
+        tableview_keuzes.setItems(modelStudent.getKeuzes());
+    }
     public void puntenToekennen() {
         int punten = Integer.parseInt(textfield_admin_punten_punten.getText());
         int student = Integer.parseInt(textfield_admin_punten_SID.getText());
@@ -421,27 +500,7 @@ public class FXMLDocumentController {
             vulKeuzeTabel();
         }
     }
-    
-    public void aanvraagBP() {
-        if(label_student_BP.getText()== null && label_student_beschrijving.getText() == null){
-            Integer bpID = modelBP.getID(label_student_BPselected.getText());
-            String text = label_student_studentID.getText();
-            Integer studentID = Integer.parseInt(text);
-            
-            modelStudent.voegKeuzeToe(studentID, bpID);
-            label_student_BP.setText(modelBP.getBPkeuze(studentID));
-            label_student_beschrijving.setText(modelBP.getBPbeschrijvingKeuze(studentID));   
-        } else {
-            label_student_BPwarning.setText("u heeft al een bachelorproef!");    
-        }
-    }
-    
-    private void toonGeselecteerdeBP(Bachelorproef nieuw) {
-        String titel = nieuw.getTitel();
-        label_student_BPselected.setText(titel);
-    }
-    
-    private void toonKeuze(Keuze nieuw){
+    private void toonKeuze(Keuze nieuw){ //hoort bij de ChangeListener
         int studentID = nieuw.getStudent();
         String studentIDtext = Integer.toString(studentID);
         textfield_admin_punten_SID.setText(studentIDtext);
@@ -452,44 +511,31 @@ public class FXMLDocumentController {
         textfield_admin_punten_BPID.setText(bachelorproefIDtext);
         textfield_admin_punten_BPtitel.setText(modelBP.getTitelBP_id(bachelorproefID));
         textfield_admin_punten_beschijving.setText(modelBP.getBeschrijvingBP(bachelorproefID));
-    }
-    
-    public void gaNaarStudentScherm() {
-       anchorpane_menu.setVisible(false);
-       anchorpane_admin_student.setVisible(true);
-    }
-    public void gaNaarBachelorproefScherm() {
-        anchorpane_menu.setVisible(false);
-        anchorpane_bp.setVisible(true);
-    }
-    public void gaNaarMenu_Student() {
-        anchorpane_admin_student.setVisible(false);
-        anchorpane_menu.setVisible(true);    
-    }
-    public void gaNaarMenu_BP() {
-        anchorpane_bp.setVisible(false);
-        anchorpane_menu.setVisible(true);
-    }     
-    public void studentUitloggen() {
-        anchorpane_student.setVisible(false);
-        anchorpane_login.setVisible(true);
-        label_student_BPwarning.setText("");
-        label_student_BPselected.setText("");
-    }
-    public void adminUitloggen() {
-        anchorpane_admin.setVisible(false);
-        anchorpane_login.setVisible(true);
-    } 
-    public void gaNaarPuntenScherm() {
-        anchorpane_admin.setVisible(false);
-        anchorpane_admin_punten.setVisible(true);
-    }
+    }  
     public void gaNaarMenu_punten() {
         anchorpane_admin_punten.setVisible(false);
         anchorpane_admin.setVisible(true);
     }
-
-    
-
+    public void bpAanvraagAfkeuren() {
+        int studentID = Integer.parseInt(textfield_admin_punten_SID.getText());
+        int bpID = Integer.parseInt(textfield_admin_punten_BPID.getText());
+        modelStudent.keuzeVerwijderen(studentID, bpID);
+        vulKeuzeTabel();
+    }
+    public void laagstePuntZoeken() {
+        int laagstePunt = modelStudent.getLaagstePunt();
+        String laagstePuntString = String.valueOf(laagstePunt);
+        button_admin_punten_laagste.setText(laagstePuntString);
+    }
+    public void hoogstePuntZoeken() {
+        int hoogstePunt = modelStudent.getHoogstePunt();
+        String hoogstePuntString = String.valueOf(hoogstePunt);
+        button_admin_punten_hoogste.setText(hoogstePuntString);
+    }
+    public void gemiddeldePuntZoeken() {
+        int gemPunt = modelStudent.getGemiddeldePunt();
+        String gemPuntString = String.valueOf(gemPunt);
+        button_admin_punten_gemPunt.setText(gemPuntString);
+    }   
 }
 
