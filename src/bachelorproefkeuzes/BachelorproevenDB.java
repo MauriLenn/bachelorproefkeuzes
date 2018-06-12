@@ -125,6 +125,46 @@ public class BachelorproevenDB {
         } 
     }
     
+    public String getBeschrijvingBP(int id){
+        try {
+            String sql = "select beschrijving from bp where id = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            stmt.setInt(1,id);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                String beschrijvingBP = results.getString("beschrijving");
+                return beschrijvingBP;
+            }    
+            results.close();
+            stmt.close();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
+    
+    public String getTitelBP_id(int id){
+        try {
+            String sql = "select titel from bp where id = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            stmt.setInt(1,id);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                String titelBP = results.getString("titel");
+                return titelBP;
+            }    
+            results.close();
+            stmt.close();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
+    
     public Integer getID(String bpTitel){
         try {
             String sql = "select id from bp where titel = ?";

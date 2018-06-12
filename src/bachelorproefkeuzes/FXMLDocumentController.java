@@ -103,7 +103,7 @@ public class FXMLDocumentController {
     private Button button_admin_Uitloggen;
     
     @FXML
-    private AnchorPane anchorpane_tableview_bp;
+    private AnchorPane anchorpane_tableview;
     
     @FXML
     private AnchorPane anchorpane_bp;
@@ -167,6 +167,9 @@ public class FXMLDocumentController {
 
     @FXML
     private AnchorPane anchorpane_menu;
+    
+    @FXML
+    private Button button_admin_goToPunten;
 
     @FXML
     private Button button_goToStudent;
@@ -192,6 +195,47 @@ public class FXMLDocumentController {
     @FXML
     private TableColumn<Student, String> column_naam;
     
+    @FXML
+    private AnchorPane anchorpane_admin_punten;
+
+    @FXML
+    private Button button_admin_punten_back;
+
+    @FXML
+    private TableView<Keuze> tableview_keuzes;
+
+    @FXML
+    private TableColumn<Keuze, Number> tablecolumn_Keuzes_student;
+
+    @FXML
+    private TableColumn<Keuze, Number> tablecolumn_keuzes_BP;
+
+    @FXML
+    private TableColumn<Keuze, Number> tablecolumn_keuzes_punten;
+    
+    @FXML
+    private TextField textfield_admin_punten_SID;
+
+    @FXML
+    private TextField textfield_admin_punten_naam;
+
+    @FXML
+    private TextField textfield_admin_punten_BPID;
+
+    @FXML
+    private TextField textfield_admin_punten_BPtitel;
+
+    @FXML
+    private TextArea textfield_admin_punten_beschijving;
+
+    @FXML
+    private Button button_admin_punten_toekennen;
+    
+    @FXML
+    private TextField textfield_admin_punten_punten;
+
+
+    
     private BachelorproevenDB modelBP;
     private StudentenDB modelStudent;
 
@@ -216,12 +260,18 @@ public class FXMLDocumentController {
         button_admin_Uitloggen.setOnAction(event -> adminUitloggen());
         button_student_Wveranderen.setOnAction(event -> wachtwoordVeranderen());
         button_student_BPaanvragen.setOnAction(event -> aanvraagBP());
+        button_admin_goToPunten.setOnAction(event -> gaNaarPuntenScherm());
+        button_admin_punten_back.setOnAction(event -> gaNaarMenu_punten());
+        button_admin_punten_toekennen.setOnAction(event -> puntenToekennen());
         
         
         vulTabellen();
+        vulKeuzeTabel();
         
         tableview_student_BPaanvraag.getSelectionModel().selectedItemProperty()
                     .addListener((observable,oud,nieuw) -> toonGeselecteerdeBP(nieuw));
+        tableview_keuzes.getSelectionModel().selectedItemProperty()
+                .addListener((observable,oud,nieuw) -> toonKeuze(nieuw));
     }
     
     public void voegBPToe(){
@@ -263,7 +313,14 @@ public class FXMLDocumentController {
         
         column_id.setCellValueFactory(cel -> cel.getValue().idProperty());
         column_naam.setCellValueFactory(cel -> cel.getValue().naamProperty() );
-        studenten.setItems(modelStudent.getProeven());
+        studenten.setItems(modelStudent.getProeven());    
+    }
+    
+    public void vulKeuzeTabel(){
+        tablecolumn_Keuzes_student.setCellValueFactory(cel -> cel.getValue().studentProperty());
+        tablecolumn_keuzes_BP.setCellValueFactory(cel -> cel.getValue().bachelorproefProperty());
+        tablecolumn_keuzes_punten.setCellValueFactory(cel -> cel.getValue().puntenProperty());
+        tableview_keuzes.setItems(modelStudent.getKeuzes());
     }
     
     public void vulBPaanvraagTabel() {
@@ -350,6 +407,21 @@ public class FXMLDocumentController {
         }
     }
     
+    public void puntenToekennen() {
+        int punten = Integer.parseInt(textfield_admin_punten_punten.getText());
+        int student = Integer.parseInt(textfield_admin_punten_SID.getText());
+        int bachelorproef = Integer.parseInt(textfield_admin_punten_BPID.getText());
+        
+        if (punten > 20){
+            textfield_admin_punten_punten.setStyle("-fx-text-inner-color: red;");
+        }
+        else {
+            Keuze keuze = new Keuze(student,bachelorproef,punten);
+            modelStudent.puntenToekennen(keuze);
+            vulKeuzeTabel();
+        }
+    }
+    
     public void aanvraagBP() {
         if(label_student_BP.getText()== null && label_student_beschrijving.getText() == null){
             Integer bpID = modelBP.getID(label_student_BPselected.getText());
@@ -367,6 +439,19 @@ public class FXMLDocumentController {
     private void toonGeselecteerdeBP(Bachelorproef nieuw) {
         String titel = nieuw.getTitel();
         label_student_BPselected.setText(titel);
+    }
+    
+    private void toonKeuze(Keuze nieuw){
+        int studentID = nieuw.getStudent();
+        String studentIDtext = Integer.toString(studentID);
+        textfield_admin_punten_SID.setText(studentIDtext);
+        textfield_admin_punten_naam.setText(modelStudent.getNaam(studentID));
+        
+        int bachelorproefID = nieuw.getBachelorproef();
+        String bachelorproefIDtext = Integer.toString(bachelorproefID);
+        textfield_admin_punten_BPID.setText(bachelorproefIDtext);
+        textfield_admin_punten_BPtitel.setText(modelBP.getTitelBP_id(bachelorproefID));
+        textfield_admin_punten_beschijving.setText(modelBP.getBeschrijvingBP(bachelorproefID));
     }
     
     public void gaNaarStudentScherm() {
@@ -395,7 +480,16 @@ public class FXMLDocumentController {
         anchorpane_admin.setVisible(false);
         anchorpane_login.setVisible(true);
     } 
+    public void gaNaarPuntenScherm() {
+        anchorpane_admin.setVisible(false);
+        anchorpane_admin_punten.setVisible(true);
+    }
+    public void gaNaarMenu_punten() {
+        anchorpane_admin_punten.setVisible(false);
+        anchorpane_admin.setVisible(true);
+    }
 
     
+
 }
 

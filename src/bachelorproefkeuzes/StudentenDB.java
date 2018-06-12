@@ -69,7 +69,7 @@ public class StudentenDB {
     public ObservableList<Student> getProeven(){
         
         try {
-            String sql = "select * from student";
+            String sql = "select * from student order by id";
             PreparedStatement stmt =
                     connectie.prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
@@ -82,6 +82,31 @@ public class StudentenDB {
                 Student student = new Student(naam,paswoord);
                 student.setId(id);
                 lijst.add(student);
+            }
+            results.close();
+            stmt.close();
+            return lijst;
+        } catch (SQLException ex) {
+            Logger.getLogger(BachelorproevenDB.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public ObservableList<Keuze> getKeuzes(){
+        
+        try {
+            String sql = "select * from keuzes";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql);
+            ResultSet results = stmt.executeQuery();
+            ObservableList<Keuze> lijst;
+            lijst = FXCollections.observableArrayList();
+            while(results.next()){
+                int student = results.getInt("student");
+                int bachelorproef = results.getInt("bachelorproef");
+                int punten = results.getInt("punten");
+                Keuze keuze = new Keuze(student,bachelorproef,punten);
+                lijst.add(keuze);
             }
             results.close();
             stmt.close();
@@ -158,6 +183,20 @@ public class StudentenDB {
         } catch (SQLException ex) {
             Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+    
+    public void puntenToekennen(Keuze k){
+         try {
+            String sql = "update keuzes set punten = ? where student = ? and bachelorproef = ?";
+            PreparedStatement stmt =
+                    connectie.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, k.getPunten());
+            stmt.setInt(2, k.getStudent());
+            stmt.setInt(3, k.getBachelorproef());
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentenDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
