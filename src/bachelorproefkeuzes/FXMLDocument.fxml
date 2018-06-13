@@ -85,11 +85,6 @@
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="label_student_beschrijving" alignment="TOP_LEFT" layoutX="377.0" layoutY="31.0" prefHeight="164.0" prefWidth="328.0">
-               <font>
-                  <Font name="System Bold Italic" size="12.0" />
-               </font>
-            </Label>
             <Label fx:id="label_student_BPwarning" alignment="CENTER" layoutX="213.0" layoutY="510.0" prefHeight="17.0" prefWidth="305.0" textFill="#fc0000" />
             <Label layoutX="115.0" layoutY="584.0" text="Geselecteerde bachelorproef : ">
                <font>
@@ -101,6 +96,7 @@
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Label>
+            <TextArea fx:id="label_student_beschrijving" editable="false" layoutX="366.0" layoutY="36.0" prefHeight="159.0" prefWidth="348.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="anchorpane_admin" layoutX="4.0" prefHeight="668.0" prefWidth="724.0" visible="false">
@@ -257,6 +253,11 @@
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Button>
+            <Label layoutX="14.0" layoutY="49.0" text="bachelorproeven met een 0 moeten nog een punt toegekend krijgen">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
     </children>

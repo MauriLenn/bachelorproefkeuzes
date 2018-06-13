@@ -186,7 +186,7 @@ public class StudentenDB {
             
             stmt.setInt(1, studentID);
             stmt.setInt(2, bpID);
-            stmt.setInt(3, 0);
+            stmt.setInt(3, 0); // 0 staat voor aanvraag nog niet behandeld
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException ex) {
@@ -262,6 +262,10 @@ public class StudentenDB {
         }
     }
     
+    /**
+     * 
+     * @return 
+     */
     public int getLaagstePunt(){
         try {
             String sql = "select min(punten) as min_punten from keuzes";
@@ -280,7 +284,10 @@ public class StudentenDB {
             return -1;
         } 
     }
-    
+    /**
+     * 
+     * @return 
+     */
     public int getHoogstePunt(){
         try {
             String sql = "select max(punten) as max_punten from keuzes";
@@ -299,7 +306,10 @@ public class StudentenDB {
             return -1;
         } 
     }
-    
+    /**
+     * 
+     * @return 
+     */
     public int getGemiddeldePunt(){
         try {
             String sql = "select avg(punten) as avg_punten from keuzes";

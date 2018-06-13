@@ -7,14 +7,11 @@
 package bachelorproefkeuzes;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -43,7 +40,7 @@ public class FXMLDocumentController {
     private Label label_student_BP;
 
     @FXML
-    private Label label_student_beschrijving;
+    private TextArea label_student_beschrijving;
     
     @FXML
     private TableView<Bachelorproef> tableview_student_BPaanvraag;
@@ -417,6 +414,7 @@ public class FXMLDocumentController {
             voegStudenttoe.setText(alles.size() + " studenten");
             textfield_naamStudent.clear();
             textfield_wachtwoord.clear();
+            textfield_herhaalWachtwoord.clear();
             vulTabellen();
         } else {
             label_foutWachtwoord.setText("wachtwoorden komen niet overeen");
