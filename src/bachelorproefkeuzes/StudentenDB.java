@@ -24,7 +24,7 @@ public class StudentenDB {
     private Connection connectie;
     
     /**
-     *
+     * Methode om een connectie met de database te maken 
      */
     public StudentenDB(){
         try {
@@ -36,7 +36,8 @@ public class StudentenDB {
     }
     
     /**
-     *
+     * Methode om een student toe te voegen aan de tabel student
+     * 
      * @param student
      */
     public void voegToe (Student student){
@@ -56,7 +57,8 @@ public class StudentenDB {
     }
     
     /**
-     *
+     * Methode om het wachtwoord van een student te veranderen
+     * 
      * @param studentID
      * @param nieuwPaswoord
      */
@@ -75,7 +77,8 @@ public class StudentenDB {
     }
     
     /**
-     *
+     * Methode om een student uit de tabel student te verwijderen
+     * 
      * @param studentID
      */
     public void verwijderStudent(Integer studentID){
@@ -93,10 +96,11 @@ public class StudentenDB {
     }
     
     /**
-     *
-     * @return
+     * Methode om alle studenten uit de tabel student in een lijst te steken
+     * 
+     * @return een lijst van alle studenten
      */
-    public ObservableList<Student> getProeven(){
+    public ObservableList<Student> getStudenten(){
         
         try {
             String sql = "select * from student order by id";
@@ -123,9 +127,10 @@ public class StudentenDB {
     }
    
     /**
-     *
+     * Methode om het wachtwoord op te vragen van een student
+     * 
      * @param studentID
-     * @return
+     * @return paswoord
      */
     public String getWachtwoord(Integer studentID){
         try {
@@ -148,9 +153,10 @@ public class StudentenDB {
     }
    
     /**
-     *
+     * Methode om de naam van een student te zoeken 
+     * 
      * @param studentID
-     * @return
+     * @return naam student
      */
     public String getNaam(Integer studentID){
         try {
@@ -173,7 +179,8 @@ public class StudentenDB {
     }
     
     /**
-     *
+     * Methode om een keuze van een student toe te voegen aan de tabel keuzes
+     * 
      * @param studentID
      * @param bpID
      */
@@ -195,7 +202,8 @@ public class StudentenDB {
     }
     
     /**
-     *
+     * Methode om punten toe te kennen aan een keuze van een student
+     * 
      * @param k
      */
     public void puntenToekennen(Keuze k){
@@ -214,6 +222,7 @@ public class StudentenDB {
     }
     
     /**
+     * Methode om een keuze van een student te verwijderen 
      * 
      * @param studentID
      * @param bpID 
@@ -234,8 +243,9 @@ public class StudentenDB {
     }
     
     /**
-     *
-     * @return
+     * Methodes om alle keuze uit de tabel keuzes te halen 
+     * 
+     * @return een lijst van keuzes 
      */
     public ObservableList<Keuze> getKeuzes(){
         
@@ -263,8 +273,9 @@ public class StudentenDB {
     }
     
     /**
+     * Methode om het laagste punt uit de tabel keuzes te zoeken 
      * 
-     * @return 
+     * @return het laagste punt
      */
     public int getLaagstePunt(){
         try {
@@ -285,8 +296,9 @@ public class StudentenDB {
         } 
     }
     /**
+     * Methode om het hoogste punt uit de tabel keuzes te zoeken
      * 
-     * @return 
+     * @return het hoogste punt
      */
     public int getHoogstePunt(){
         try {
@@ -307,8 +319,9 @@ public class StudentenDB {
         } 
     }
     /**
+     * Methode om het gemiddelde van de punten uit de tabel keuzes te berekenen
      * 
-     * @return 
+     * @return het gemiddelde van de punten 
      */
     public int getGemiddeldePunt(){
         try {

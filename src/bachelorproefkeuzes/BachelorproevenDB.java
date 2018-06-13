@@ -39,7 +39,7 @@ public class BachelorproevenDB {
     }
     
     /**
-     * Methode om een bachelorproef toe te voegen aan tabel bp
+     * Methode om een bachelorproef toe te voegen aan de tabel bp
      * 
      * @param bp
      */
@@ -62,7 +62,9 @@ public class BachelorproevenDB {
     }
     
      /**
-     *
+     * Methode om een bachelorproef te verwijderen uit de tabel bp op basis 
+     * van zijn titel 
+     * 
      * @param naamBP
      */
     public void verwijderBP(String naamBP){
@@ -111,9 +113,10 @@ public class BachelorproevenDB {
     }
     
     /**
-     *
+     * Methode om alle bachelorproeven die zich niet bevinden in de tabel keuze
+     * uit de database te halen 
      * 
-     * @return
+     * @return een lijst van bachelorproeven 
      */
     public ObservableList<Bachelorproef> getBeschikbareProeven(){
         
@@ -142,9 +145,11 @@ public class BachelorproevenDB {
     }
     
     /**
-     *
+     * Methode om de titel van een bachelorproef uit de tabel bp te halen op
+     * basis van zijn huidige titel
+     * 
      * @param huidigeTitelBP
-     * @return
+     * @return titel van een bachelorproef 
      */
     public String getTitelBP(String huidigeTitelBP){
         try {
@@ -167,9 +172,11 @@ public class BachelorproevenDB {
     }
     
     /**
-     *
+     * Methode om de beschrijving van een bachelorproef uit de tabel bp op te
+     * halen op basis van zijn id 
+     * 
      * @param id
-     * @return
+     * @return beschrijving van een bachelorproef 
      */
     public String getBeschrijvingBP(int id){
         try {
@@ -192,9 +199,11 @@ public class BachelorproevenDB {
     }
     
     /**
-     *
+     * Methode om de titel van een bachelorproef uit de tabel bp op te halen op 
+     * basis van zijn id
+     * 
      * @param id
-     * @return
+     * @return de titel van een bachelorproef
      */
     public String getTitelBP_id(int id){
         try {
@@ -217,9 +226,11 @@ public class BachelorproevenDB {
     }
     
     /**
-     *
+     * Methode om de id van een bachelorproef uit de tabel bp op te halen op 
+     * basis van zijn titel 
+     * 
      * @param bpTitel
-     * @return
+     * @return id van een bachelorproef 
      */
     public Integer getID(String bpTitel){
         try {
@@ -244,9 +255,11 @@ public class BachelorproevenDB {
    
     
     /**
-     *
+     * Methode om de titel van een bachelorproef van een student
+     * op te halen 
+     * 
      * @param studentID
-     * @return
+     * @return de titel van een bachelorproef
      */
     public String getBPkeuze(Integer studentID){
         try {
@@ -269,9 +282,11 @@ public class BachelorproevenDB {
     }
     
     /**
-     *
+     * Methode om de beschrijving van een bachelorproef van een student
+     * op te halen 
+     * 
      * @param studentID
-     * @return
+     * @return beschrijving van de bachelorproef 
      */
     public String getBPbeschrijvingKeuze(Integer studentID){
         try {

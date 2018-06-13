@@ -379,7 +379,7 @@ public class FXMLDocumentController {
         
         column_id.setCellValueFactory(cel -> cel.getValue().idProperty());
         column_naam.setCellValueFactory(cel -> cel.getValue().naamProperty() );
-        studenten.setItems(modelStudent.getProeven());    
+        studenten.setItems(modelStudent.getStudenten());    
     }
     
     // Methodes die bij het administratiescherm_Menu horen
@@ -410,7 +410,7 @@ public class FXMLDocumentController {
             label_foutWachtwoord.setText("");
             Student nieuw = new Student(textfield_naamStudent.getText(),textfield_wachtwoord.getText());
             modelStudent.voegToe(nieuw);
-            ObservableList<Student> alles = modelStudent.getProeven();
+            ObservableList<Student> alles = modelStudent.getStudenten();
             voegStudenttoe.setText(alles.size() + " studenten");
             textfield_naamStudent.clear();
             textfield_wachtwoord.clear();
